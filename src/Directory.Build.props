@@ -1,0 +1,14 @@
+<Project>
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Deveel</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Authors>antonello</Authors>
+    <Company>Deveel</Company>
+    <Copyright>Copyright (C) 2024 Antonello Provenzano</Copyright>
+  </PropertyGroup>
+</Project>

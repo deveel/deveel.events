@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Title>Deveel Events Model</Title>
+    <Description>The model and abstractions of the Deveel Events</Description>
+    <PackageTags>event;events;model;abstractions</PackageTags>
+  </PropertyGroup>
+
+</Project>
