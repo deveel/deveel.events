@@ -9,5 +9,7 @@ namespace Deveel.Events {
 		public JsonSerializerOptions? JsonSerializerOptions { get; set; } = new JsonSerializerOptions();
 
 		public Dictionary<string, object?> Attributes { get; set; } = new Dictionary<string, object?>();
+
+		public Uri? DataSchemaBaseUri { get; set; }
 	}
 }

@@ -134,7 +134,7 @@ namespace Deveel.Events {
             if (EventCreator == null)
                 throw new NotSupportedException("Cannot create events from the data");
 
-			return EventCreator.CreateEventFromData(dataType, data, PublisherOptions.JsonSerializerOptions);
+			return EventCreator.CreateEventFromData(dataType, data);
         }
 
         public Task PublishAsync<TData>(TData data, CancellationToken cancellationToken = default)

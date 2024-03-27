@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
@@ -6,13 +6,23 @@ using System.Text.Json.Serialization;
 
 namespace Deveel.Events
 {
-    public static class EventCreatorTests
+    public class EventCreatorTests
     {
-        [Fact]
-        public static void CreateFromData()
+        public EventCreatorTests()
         {
-            var creator = new EventCreator();
-            var @event = creator.CreateEventFromData(new PersonCreated
+            var services = new ServiceCollection();
+            services.AddEventPublisher();
+
+            var provider = services.BuildServiceProvider();
+
+            EventCreator = provider.GetRequiredService<IEventCreator>();
+        }
+
+        private IEventCreator EventCreator { get; }
+        [Fact]
+        public void CreateFromData()
+        {
+            var @event = EventCreator.CreateEventFromData(new PersonCreated
             {
                 FirstName = "John",
                 LastName = "Doe",
@@ -47,10 +57,9 @@ namespace Deveel.Events
         }
 
         [Fact]
-        public static void CreateFromDataWithoutEventAttribute()
+        public void CreateFromDataWithoutEventAttribute()
         {
-            var creator = new EventCreator();
-            Assert.Throws<ArgumentException>(() => creator.CreateEventFromData(new { Name = "John" }));
+            Assert.Throws<ArgumentException>(() => EventCreator.CreateEventFromData(new { Name = "John" }));
         }
 
 

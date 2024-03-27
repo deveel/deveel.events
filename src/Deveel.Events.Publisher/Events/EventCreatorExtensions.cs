@@ -6,7 +6,7 @@ namespace Deveel.Events
 {
     public static class EventCreatorExtensions
     {
-        public static CloudEvent CreateEventFromData<T>(this IEventCreator creator, T data, JsonSerializerOptions? jsonOptions = null)
-            => creator.CreateEventFromData(typeof(T), data, jsonOptions);
+        public static CloudEvent CreateEventFromData<T>(this IEventCreator creator, T data)
+            => creator.CreateEventFromData(typeof(T), data);
     }
 }
