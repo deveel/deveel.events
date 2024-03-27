@@ -1,6 +1,9 @@
 ﻿using System.Text;
 
+using Azure.Messaging;
 using Azure.Messaging.ServiceBus;
+
+using CloudNative.CloudEvents;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -16,7 +19,7 @@ namespace Deveel.Events {
 			services.AddSingleton<IServiceBusClientFactory>(new TestServiceBusClientFactory(OnMessageSent));
 
 			services.AddEventPublisher(options => {
-				options.Source = "test";
+				options.Source = new Uri("https://api.svc.deveel.com/test-service");
 			})
 			.AddServiceBusChannel(options => {
 				options.ConnectionString = "Endpoint=sb://test.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=abc12345";
@@ -37,13 +40,23 @@ namespace Deveel.Events {
 
 		[Fact]
 		public async Task PublishEventWithBinaryData() {
-			await Publisher.PublishEventAsync(new Event("test.created", "1.0") {
-				EventData = new EventData(Encoding.UTF8.GetBytes("Hello, World!"))
-			});
+			var cloudEvent = new CloudNative.CloudEvents.CloudEvent
+			{
+				Subject = "test",
+				DataContentType = "application/binary",
+				Data = Encoding.UTF8.GetBytes(Convert.ToBase64String(Encoding.UTF8.GetBytes("Hello, World!"))),
+				Source = new Uri("https://api.svc.deveel.com/test-service"),
+				Type = "test.created",
+				Time = DateTime.UtcNow,
+				Id = Guid.NewGuid().ToString("N"),
+				DataSchema = new Uri("http://example.com/schema/1.0")
+			};
+
+			await Publisher.PublishEventAsync(cloudEvent);
 
 			Assert.NotNull(MessageSent);
 			Assert.Equal("test", MessageSent!.Subject);
-			Assert.Equal("application/octet-stream", MessageSent.ContentType);
+			Assert.Equal("application/binary", MessageSent.ContentType);
 			Assert.NotNull(MessageSent.Body);
 			Assert.NotNull(MessageSent.ApplicationProperties);
 			Assert.NotEmpty(MessageSent.ApplicationProperties);

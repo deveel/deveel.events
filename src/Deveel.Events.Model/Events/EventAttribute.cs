@@ -3,17 +3,17 @@
 namespace Deveel.Events {
 	[AttributeUsage(AttributeTargets.Class, Inherited = false)]
 	public class EventAttribute : Attribute {
-		public EventAttribute(string eventType, string dataVersion) {
+		public EventAttribute(string eventType, string dataSchema) {
 			ArgumentNullException.ThrowIfNull(eventType, nameof(eventType));
-			ArgumentNullException.ThrowIfNull(dataVersion, nameof(dataVersion));
+			ArgumentNullException.ThrowIfNull(dataSchema, nameof(dataSchema));
 
 			EventType = eventType;
-			DataVersion = dataVersion;
+			DataSchema = dataSchema;
 		}
 
 		public string EventType { get; }
 
-		public string DataVersion { get; }
+		public string DataSchema { get; }
 
 		public string? Description { get; set; }
 	}

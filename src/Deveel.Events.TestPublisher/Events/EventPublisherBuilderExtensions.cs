@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using CloudNative.CloudEvents;
+
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Deveel.Events {
 	public static class EventPublisherBuilderExtensions {
@@ -9,10 +11,10 @@ namespace Deveel.Events {
 			return builder;
 		}
 
-		public static EventPublisherBuilder AddTestChannel(this EventPublisherBuilder builder, Func<IEvent, Task> callback)
+		public static EventPublisherBuilder AddTestChannel(this EventPublisherBuilder builder, Func<CloudEvent, Task> callback)
 			=> AddTestChannel(builder, new DelegatedEventPublishCallback(callback));
 
-		public static EventPublisherBuilder AddTestChannel(this EventPublisherBuilder builder, Action<IEvent> callback)
+		public static EventPublisherBuilder AddTestChannel(this EventPublisherBuilder builder, Action<CloudEvent> callback)
 			=> AddTestChannel(builder, new DelegatedEventPublishCallback(callback));
 	}
 }

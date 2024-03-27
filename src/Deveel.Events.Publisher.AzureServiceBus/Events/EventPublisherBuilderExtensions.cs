@@ -7,7 +7,7 @@ namespace Deveel.Events {
 		private static EventPublisherBuilder AddServiceBusChannel(this EventPublisherBuilder builder) {
 			builder.Services.AddSingleton<IEventPublishChannel, ServiceBusEventPublishChannel>();
 			builder.Services.TryAddSingleton<IServiceBusClientFactory, ServiceBusClientFactory>();
-			builder.Services.TryAddSingleton<ServiceBusMessageCreator>();
+			builder.Services.TryAddSingleton<ServiceBusMessageFactory>();
 			return builder;
 		}
 
@@ -31,7 +31,7 @@ namespace Deveel.Events {
 
 		private static void ConfigureIdentifier(ServiceBusEventPublishChannelOptions channelOptions, IOptions<EventPublisherOptions> publisherOptions) { 
 			if (String.IsNullOrWhiteSpace(channelOptions.ClientOptions.Identifier))
-				channelOptions.ClientOptions.Identifier = publisherOptions?.Value.Source ?? "";
+				channelOptions.ClientOptions.Identifier = publisherOptions?.Value.Source?.ToString() ?? "";
 		}
 	}
 }

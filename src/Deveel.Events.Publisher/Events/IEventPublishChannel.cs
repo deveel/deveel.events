@@ -1,5 +1,7 @@
-﻿namespace Deveel.Events {
+﻿using CloudNative.CloudEvents;
+
+namespace Deveel.Events {
 	public interface IEventPublishChannel {
-		Task PublishAsync(IEvent @event, CancellationToken cancellationToken = default);
+		Task PublishAsync(CloudEvent @event, CancellationToken cancellationToken = default);
 	}
 }

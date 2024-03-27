@@ -1,4 +1,6 @@
-﻿namespace Deveel.Events {
+﻿using CloudNative.CloudEvents;
+
+namespace Deveel.Events {
 	class TestEventPublishChannel : IEventPublishChannel {
 		private readonly IEventPublishCallback _callback;
 
@@ -6,7 +8,7 @@
 			_callback = callback;
 		}
 
-		public Task PublishAsync(IEvent @event, CancellationToken cancellationToken = default) {
+		public Task PublishAsync(CloudEvent @event, CancellationToken cancellationToken = default) {
 			return _callback.OnEventPublishedAsync(@event);
 		}
 	}

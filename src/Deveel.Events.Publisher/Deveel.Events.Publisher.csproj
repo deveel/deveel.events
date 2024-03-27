@@ -12,6 +12,9 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="CloudNative.CloudEvents" Version="2.7.1" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Deveel.Events.Model\Deveel.Events.Model.csproj" />
   </ItemGroup>
 </Project>

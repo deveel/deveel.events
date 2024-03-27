@@ -2,6 +2,8 @@
 
 using Azure.Messaging.ServiceBus;
 
+using CloudNative.CloudEvents;
+
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
@@ -10,7 +12,7 @@ namespace Deveel.Events {
 	public sealed class ServiceBusEventPublishChannel : IEventPublishChannel, IAsyncDisposable, IDisposable {
 		private ServiceBusSender? sender;
 		private ServiceBusClient? client;
-		private readonly ServiceBusMessageCreator messageCreator;
+		private readonly ServiceBusMessageFactory messageCreator;
 		private readonly ILogger logger;
 
 		private bool disposed;
@@ -18,7 +20,7 @@ namespace Deveel.Events {
 		public ServiceBusEventPublishChannel(
 			IOptions<ServiceBusEventPublishChannelOptions> options,
 			IServiceBusClientFactory clientFactory,
-			ServiceBusMessageCreator messageCreator,
+			ServiceBusMessageFactory messageCreator,
 			ILogger<ServiceBusEventPublishChannel>? logger = null)
 			: this(options.Value, clientFactory, messageCreator, logger) {
 		}
@@ -26,7 +28,7 @@ namespace Deveel.Events {
 		private ServiceBusEventPublishChannel(
 			ServiceBusEventPublishChannelOptions options,
 			IServiceBusClientFactory clientFactory,
-			ServiceBusMessageCreator messageCreator,
+			ServiceBusMessageFactory messageCreator,
 			ILogger<ServiceBusEventPublishChannel>? logger = null) {
 			if (String.IsNullOrWhiteSpace(options.ConnectionString))
 				throw new ArgumentException("The connection string is required");
@@ -47,22 +49,22 @@ namespace Deveel.Events {
 				throw new ObjectDisposedException(nameof(ServiceBusEventPublishChannel));
 		}
 
-		public async Task PublishAsync(IEvent @event, CancellationToken cancellationToken = default) {
+		public async Task PublishAsync(CloudEvent @event, CancellationToken cancellationToken = default) {
 			ThrowIfDisposed();
 			cancellationToken.ThrowIfCancellationRequested();
 
-			logger.TracePublishingEvent(@event.EventType);
+			logger.TracePublishingEvent(@event.Type);
 
 			try {
 				await sender!.SendMessageAsync(messageCreator.CreateMessage(@event), cancellationToken);
 			} catch (ServiceBusException ex) {
-				logger.LogErrorPublishingEvent(ex, @event.EventType);
+				logger.LogErrorPublishingEvent(ex, @event.Type);
 				throw new EventPublishException("The ServiceBus service caused an error", ex);
 			} catch (SerializationException ex) {
-				logger.LogErrorPublishingEvent(ex, @event.EventType);
+				logger.LogErrorPublishingEvent(ex, @event.Type);
 				throw new EventPublishException("It was not possible to serialize the message", ex);
 			} catch (Exception ex) {
-				logger.LogErrorPublishingEvent(ex, @event.EventType);
+				logger.LogErrorPublishingEvent(ex, @event.Type);
 				throw;
 			}
 
