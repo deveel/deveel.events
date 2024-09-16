@@ -53,4 +53,4 @@ jobs:
 
   clean:
     needs: build
-    uses: ./github/actions/clean-packages.yml
+    uses: ./.github/actions/clean-packages.yml
