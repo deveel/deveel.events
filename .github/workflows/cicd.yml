@@ -26,7 +26,7 @@ jobs:
       - name: Set the TFM in Ubuntu
         if: startsWith(matrix.os, 'ubuntu')
         run: |
-          VERSION=$(echo "${{ matrix.dotnet }}" | sed 's/[^0-9.]*//g')
+          VERSION=$(echo "${{ matrix.dotnet-version }}" | sed 's/[^0-9.]*//g')
           VERSION=$(echo "${VERSION}" | sed 's/\.$//')
           DOTNET_TFM="net${VERSION}"
           echo "DOTNET_TFM=$DOTNET_TFM" >> $GITHUB_ENV
@@ -34,7 +34,7 @@ jobs:
       - name: Set the TFM in Windows
         if: startsWith(matrix.os, 'windows')
         run: |
-          $VERSION = "${{ matrix.dotnet }}".Substring(0, "${{ matrix.dotnet }}".LastIndexOf('.'))
+          $VERSION = "${{ matrix.dotnet-version }}".Substring(0, "${{ matrix.dotnet-version }}".LastIndexOf('.'))
           $DOTNET_TFM = "net$VERSION"
           echo "DOTNET_TFM=$DOTNET_TFM" | Out-File -FilePath $env:GITHUB_ENV -Append
 
@@ -68,5 +68,6 @@ jobs:
         run: dotnet nuget push ./pkgs/*.nupkg --source https://nuget.pkg.github.com/deveel/index.json --api-key ${{ secrets.GITHUB_TOKEN }}
 
   clean:
+    name: Clean Events Packages
     needs: build
-    uses: ./.github/actions/clean-packages.yml
+    uses: ./.github/workflows/clean-packages.yml
