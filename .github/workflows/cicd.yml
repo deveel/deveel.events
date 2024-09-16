@@ -1,8 +1,8 @@
 name: Events CI/CD
 
 permissions:
-  packages: write
   contents: read
+  packages: write
 
 on:
   push:
@@ -55,19 +55,33 @@ jobs:
         uses: gittools/actions/gitversion/execute@v3.0.0
 
       - name: Build
-        run: dotnet build -c Release --no-restore /p:Version=${{ env.GitVersion_SemVer }} /p:AssemblyVersion=${{ env.GitVersion_AssemblySemVer }} /p:FileVersion=${{ env.GitVersion_AssemblySemFileVer }}
+        run: dotnet build -c Release --no-restore
 
       - name: Test
         if: startsWith(matrix.os, 'ubuntu')
         run: dotnet test -c Release --no-build --verbosity normal --framework ${{ env.DOTNET_TFM }}
 
-      - name: Package Artifacts
-        run: dotnet pack -c Release --no-build --output ./pkgs -p:PackageVersion=${{ env.GitVersion_SemVer }}
+  publish:
+    name: Publish Events Packages
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
 
-      - name: Publish Package to GitHub Packages
-        run: dotnet nuget push ./pkgs/*.nupkg --source https://nuget.pkg.github.com/deveel/index.json --api-key ${{ secrets.GITHUB_TOKEN }}
+    - name: Build
+      run: dotnet build -c Release --no-restore /p:Version=${{ env.GitVersion_SemVer }} /p:AssemblyVersion=${{ env.GitVersion_AssemblySemVer }} /p:FileVersion=${{ env.GitVersion_AssemblySemFileVer }}
+
+    - name: Package Artifacts
+      run: dotnet pack -c Release --no-build --include-symbols --output ./pkgs -p:PackageVersion=${{ env.GitVersion_SemVer }}
+
+    - name: Publish Packages on GitHub
+      run: dotnet nuget push ./pkgs/*.nupkg --source "https://nuget.pkg.github.com/deveel/index.json" --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
 
   clean:
     name: Clean Events Packages
-    needs: build
+    needs: publish
     uses: ./.github/workflows/clean-packages.yml
