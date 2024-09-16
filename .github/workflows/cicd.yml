@@ -62,7 +62,7 @@ jobs:
         run: dotnet test -c Release --no-build --verbosity normal --framework ${{ env.DOTNET_TFM }}
 
       - name: Package Artifacts
-        run: dotnet pack -c Release --no-build --output ./pkgs --version=${{ env.GitVersion_SemVer }}
+        run: dotnet pack -c Release --no-build --output ./pkgs -p:PackageVersion=${{ env.GitVersion_SemVer }}
 
       - name: Publish Package to GitHub Packages
         run: dotnet nuget push ./pkgs/*.nupkg --source https://nuget.pkg.github.com/deveel/index.json --api-key ${{ secrets.GITHUB_TOKEN }}
