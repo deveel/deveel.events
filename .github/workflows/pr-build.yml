@@ -45,5 +45,5 @@ jobs:
         run: dotnet build -c Release --no-restore -f ${{ env.DOTNET_TFM }}
     
       - name: Test
-        run: dotnet test --no-build --no-restore --verbosity normal --framework ${{ env.DOTNET_TFM }}
+        run: dotnet test -c Release --no-build --verbosity normal --framework ${{ env.DOTNET_TFM }}
     
