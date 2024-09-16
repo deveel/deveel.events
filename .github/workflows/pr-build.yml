@@ -16,6 +16,22 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+  
+      - name: Set the TFM in Ubuntu
+        if: startsWith(matrix.os, 'ubuntu')
+        run: |
+          VERSION=$(echo "${{ matrix.dotnet }}" | sed 's/[^0-9.]*//g')
+          VERSION=$(echo "${VERSION}" | sed 's/\.$//')
+          DOTNET_TFM="net${VERSION}"
+          echo "DOTNET_TFM=$DOTNET_TFM" >> $GITHUB_ENV
+
+      - name: Set the TFM in Windows
+        if: startsWith(matrix.os, 'windows')
+        run: |
+          $VERSION = "${{ matrix.dotnet }}".Substring(0, "${{ matrix.dotnet }}".LastIndexOf('.'))
+          $DOTNET_TFM = "net$VERSION"
+          echo "DOTNET_TFM=$DOTNET_TFM" | Out-File -FilePath $env:GITHUB_ENV -Append
+
     
       - name: Setup .NET ${{ matrix.dotnet-version }}
         uses: actions/setup-dotnet@v4
@@ -26,8 +42,8 @@ jobs:
         run: dotnet restore
     
       - name: Build
-        run: dotnet build -c Release --no-restore
+        run: dotnet build -c Release --no-restore -f ${{ env.DOTNET_TFM }}
     
       - name: Test
-        run: dotnet test --no-build --no-restore --verbosity normal
+        run: dotnet test --no-build --no-restore --verbosity normal --framework ${{ env.DOTNET_TFM }}
     
