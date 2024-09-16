@@ -1,0 +1,48 @@
+name: Clean Events Packages
+
+on:
+  workflow_call:
+
+jobs:
+  clean:
+    runs-on: ubuntu-latest  
+    steps:
+      - name: Clean Deveel.Events.Model package
+        uses: actions/delete-package-versions@v4
+        with:
+          package-name: 'Deveel.Events.Model'
+          package-type: 'nuget'
+          min-versions-to-keep: 10
+          delete-only-pre-release-versions: true
+
+      - name: Clean Deveel.Events.Schema package
+        uses: actions/delete-package-versions@v4
+        with:
+          package-name: 'Deveel.Events.Schema'
+          package-type: 'nuget'
+          min-versions-to-keep: 10
+          delete-only-pre-release-versions: true
+
+      - name: Clean Deveel.Events.Published package
+        uses: actions/delete-package-versions@v4
+        with:
+          package-name: 'Deveel.Events.Publisher'
+          package-type: 'nuget'
+          min-versions-to-keep: 10
+          delete-only-pre-release-versions: true
+
+      - name: Clean Deveel.Events.Publisher.AzureServiceBus package
+        uses: actions/delete-package-versions@v4
+        with:
+          package-name: 'Deveel.Events.Publisher.AzureServiceBus'
+          package-type: 'nuget'
+          min-versions-to-keep: 10
+          delete-only-pre-release-versions: true
+
+      - name: Clean Deveel.Events.TestPublisher package
+        uses: actions/delete-package-versions@v4
+        with:
+          package-name: 'Deveel.Events.TestPublisher'
+          package-type: 'nuget'
+          min-versions-to-keep: 10
+          delete-only-pre-release-versions: true

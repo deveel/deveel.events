@@ -10,7 +10,7 @@ namespace Deveel.Events {
 			if (attribute == null)
 				throw new ArgumentException($"The type {dataType} is not an event data type");
 
-			var schema = new EventSchema(attribute.EventType, attribute.DataVersion, "object") {
+			var schema = new EventSchema(attribute.EventType, attribute.DataVersion!, "object") {
 				Description = attribute.Description
 			};
 

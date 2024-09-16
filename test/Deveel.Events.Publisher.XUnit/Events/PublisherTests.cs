@@ -1,4 +1,7 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+
+using CloudNative.CloudEvents;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -14,7 +17,7 @@ namespace Deveel.Events {
 
 			var builder = services
 				.AddEventPublisher(options => {
-					options.Source = "test";
+					options.Source = new Uri("https://api.svc.deveel.com/test-service");
 					options.Attributes.Add("env", "test");
 				})
 				.AddTestChannel(@event => Events.Add(@event));
@@ -23,28 +26,38 @@ namespace Deveel.Events {
 			Publisher = provider.GetRequiredService<EventPublisher>();
 		}
 
-		private IList<IEvent> Events { get; } = new List<IEvent>();
+		private IList<CloudEvent> Events { get; } = new List<CloudEvent>();
 
 		private EventPublisher Publisher { get; }
 
 		[Fact]
-		public async void PublishSimpleEvent() {
-			var @event = new Event("person.created", "1.0") {
-				EventData = new EventData(new {
+		public async Task PublishSimpleEvent() {
+			var @event = new CloudEvent {
+				Type = "person.created",
+				DataSchema = new Uri("http://example.com/schema/1.0"),
+				Source = new Uri("https://api.svc.deveel.com/test-service"),
+				Time = DateTime.UtcNow,
+				Id = Guid.NewGuid().ToString("N"),
+				DataContentType = "application/json",
+				Data = JsonSerializer.Serialize(new {
 					FirstName = "John",
 					LastName = "Doe"
-				})
+				}),
 			};
+
+			@event[CloudEventAttribute.CreateExtension("env", CloudEventAttributeType.String)] = "test";
 
 			await Publisher.PublishEventAsync(@event);
 
 			Assert.Single(Events);
-			Assert.Equal("person.created", Events[0].EventType);
-			Assert.Equal("1.0", Events[0].DataVersion);
+			Assert.Equal("person.created", Events[0].Type);
+			Assert.NotNull(Events[0].DataSchema);
+			Assert.Equal("http://example.com/schema/1.0", Events[0].DataSchema!.ToString());
 
-			Assert.NotNull(Events[0].EventId);
-			Assert.Equal("test", Events[0].Source);
-			Assert.Equal("test", Events[0].Attributes["env"]);
+			Assert.NotNull(Events[0].Id);
+			Assert.NotNull(Events[0].Source);
+			Assert.Equal("https://api.svc.deveel.com/test-service", Events[0].Source!.ToString());
+			Assert.Equal("test", Events[0][Events[0].GetAttribute("env")]);
 		}
 
 		[Fact]
@@ -56,17 +69,17 @@ namespace Deveel.Events {
 			});
 
 			Assert.Single(Events);
-			Assert.Equal("person.created", Events[0].EventType);
-			Assert.Equal("1.0", Events[0].DataVersion);
-			Assert.NotNull(Events[0].EventId);
-			Assert.Equal("test", Events[0].Source);
-			Assert.Equal("test", Events[0].Attributes["env"]);
+			Assert.Equal("person.created", Events[0].Type);
+			Assert.Equal("https://example.com/events/person.created/1.0", Events[0].DataSchema!.ToString());
+			Assert.NotNull(Events[0].Id);
+			Assert.Equal("https://api.svc.deveel.com/test-service", Events[0].Source!.ToString());
+			Assert.Equal("test", Events[0][Events[0].GetAttribute("env")]);
 
-			Assert.Equal(EventContentType.Object, Events[0].EventData.ContentType);
-			Assert.IsType<PersonCreated>(Events[0].EventData.Content);
+			Assert.Equal("application/cloudevents+json", Events[0].DataContentType);
+			Assert.IsType<string>(Events[0].Data);
 		}
 
-		[Event("person.created", "1.0")]
+		[Event("person.created", "https://example.com/events/person.created/1.0")]
 		class PersonCreated {
 			[JsonPropertyName("id")]
 			public string Id { get; set; }
