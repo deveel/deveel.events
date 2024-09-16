@@ -31,7 +31,7 @@ namespace Deveel.Events {
 		private EventPublisher Publisher { get; }
 
 		[Fact]
-		public async void PublishSimpleEvent() {
+		public async Task PublishSimpleEvent() {
 			var @event = new CloudEvent {
 				Type = "person.created",
 				DataSchema = new Uri("http://example.com/schema/1.0"),
