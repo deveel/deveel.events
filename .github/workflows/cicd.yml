@@ -55,14 +55,14 @@ jobs:
         uses: gittools/actions/gitversion/execute@v3.0.0
 
       - name: Build
-        run: dotnet build -c Release --no-restore /p:Version=${{ env.GitVersion_semver }} /p:AssemblyVersion=${{ env.GitVersion_assemblySemVer }} /p:FileVersion=${{ env.GitVersion_assemblySemFileVer }}
+        run: dotnet build -c Release --no-restore /p:Version=${{ env.GitVersion_SemVer }} /p:AssemblyVersion=${{ env.GitVersion_AssemblySemVer }} /p:FileVersion=${{ env.GitVersion_AssemblySemFileVer }}
 
       - name: Test
         if: startsWith(matrix.os, 'ubuntu')
         run: dotnet test -c Release --no-build --verbosity normal --framework ${{ env.DOTNET_TFM }}
 
       - name: Package Artifacts
-        run: dotnet pack -c Release --no-build --output ./pkgs --version=${{ env.GitVersion_semver }}
+        run: dotnet pack -c Release --no-build --output ./pkgs --version=${{ env.GitVersion_SemVer }}
 
       - name: Publish Package to GitHub Packages
         run: dotnet nuget push ./pkgs/*.nupkg --source https://nuget.pkg.github.com/deveel/index.json --api-key ${{ secrets.GITHUB_TOKEN }}
