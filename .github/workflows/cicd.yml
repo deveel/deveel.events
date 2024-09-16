@@ -46,14 +46,6 @@ jobs:
       - name: Install dependencies
         run: dotnet restore
 
-      - name: Setup GitVersion
-        uses: gittools/actions/gitversion/setup@v3.0.0
-        with:
-          versionSpec: '6.x'
-
-      - name: Determine Version
-        uses: gittools/actions/gitversion/execute@v3.0.0
-
       - name: Build
         run: dotnet build -c Release --no-restore
 
@@ -67,13 +59,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup GitVersion
+      uses: gittools/actions/gitversion/setup@v3.0.0
+      with:
+       versionSpec: '6.x'
+
+    - name: Determine Version
+      uses: gittools/actions/gitversion/execute@v3.0.0
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
 
     - name: Build
-      run: dotnet build -c Release --no-restore /p:Version=${{ env.GitVersion_SemVer }} /p:AssemblyVersion=${{ env.GitVersion_AssemblySemVer }} /p:FileVersion=${{ env.GitVersion_AssemblySemFileVer }}
+      run: dotnet build -c Release /p:Version=${{ env.GitVersion_SemVer }} /p:AssemblyVersion=${{ env.GitVersion_AssemblySemVer }} /p:FileVersion=${{ env.GitVersion_AssemblySemFileVer }}
 
     - name: Package Artifacts
       run: dotnet pack -c Release --no-build --include-symbols --output ./pkgs -p:PackageVersion=${{ env.GitVersion_SemVer }}
