@@ -18,6 +18,8 @@
     <DeterministicBuilds>true</DeterministicBuilds>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <DebugType>embedded</DebugType>
+    <PackageIcon>deveel-logo.png</PackageIcon>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
@@ -27,5 +29,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" Condition="$(TargetFramework) != 'net8.0'" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" Condition="$(TargetFramework) == 'net8.0'" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../../deveel-logo.png"/>
   </ItemGroup>
 </Project>

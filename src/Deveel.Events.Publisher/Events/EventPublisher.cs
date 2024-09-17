@@ -4,6 +4,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 
+using System.ComponentModel.DataAnnotations;
+
 namespace Deveel.Events {
 	public class EventPublisher {
 		private readonly IEnumerable<IEventPublishChannel> _channels;
@@ -139,5 +141,28 @@ namespace Deveel.Events {
 
         public Task PublishAsync<TData>(TData data, CancellationToken cancellationToken = default)
 			=> PublishAsync(typeof(TData), data, cancellationToken);
-	}
+
+        public Task PublishEventAsync<T>(T factory, CancellationToken cancellationToken = default)
+			where T : IEventFactory
+        {
+            ArgumentNullException.ThrowIfNull(factory, nameof(factory));
+
+            CloudEvent @event;
+
+            try
+            {
+                @event = factory.CreateEvent();
+            } catch (Exception ex)
+            {
+                _logger.LogEventFactoryError(ex, factory.GetType());
+
+                if (PublisherOptions.ThrowOnErrors)
+                    throw new EventPublishException($"An error occurred while creating an event using the factory {factory.GetType().FullName}", ex);
+
+                return Task.CompletedTask;
+            }
+
+            return PublishEventAsync(@event, cancellationToken);
+        }
+    }
 }

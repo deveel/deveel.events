@@ -53,7 +53,9 @@ namespace Deveel.Events {
 			ThrowIfDisposed();
 			cancellationToken.ThrowIfCancellationRequested();
 
-			logger.TracePublishingEvent(@event.Type);
+			ArgumentNullException.ThrowIfNull(@event, nameof(@event));
+
+            logger.TracePublishingEvent(@event.Type);
 
 			try {
 				await sender!.SendMessageAsync(messageCreator.CreateMessage(@event), cancellationToken);
