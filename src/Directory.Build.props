@@ -32,6 +32,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="../../deveel-logo.png"/>
+    <None Include="..\..\deveel-logo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 </Project>
