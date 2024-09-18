@@ -94,7 +94,9 @@ If you want to contribute to the project, please read the [Contributing Guidelin
 
 ## License
 
-The project is licensed under the [Apache 2.0](LICENSE.md), and it is free to use and distribute under the terms of the license.
+The project is released under the [MIT License](LICENSE), and it is free to use and distribute for any purpose.
+
+See the [License](LICENSE) file for more information.
 
 ## Authors
 
