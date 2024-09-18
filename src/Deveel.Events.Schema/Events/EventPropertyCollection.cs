@@ -1,20 +1,48 @@
 ﻿using System.Collections.ObjectModel;
 
 namespace Deveel.Events {
-	public sealed class EventPropertyCollection : Collection<EventProperty> {
+    /// <summary>
+    /// A collection of properties that are part of an event.
+    /// </summary>
+	/// <remarks>
+	/// This collection is used to store the properties of an event
+	/// in a versioned manner, where each property can have a version
+	/// and the collection can be used to store properties of different
+	/// versions of the event.
+	/// </remarks>
+    public sealed class EventPropertyCollection : Collection<EventProperty> {
 		private readonly IVersionedElement _owner;
 
 		internal EventPropertyCollection(IVersionedElement owner) {
 			_owner = owner;
 		}
 
-		public EventProperty this[string name] {
+        /// <summary>
+        /// Gets or sets a property with the given name from the collection.
+        /// </summary>
+        /// <param name="name">
+		/// The name of the property.
+		/// </param>
+		/// <value>
+		/// The property with the given name to be set.
+		/// </value>
+        /// <returns>
+		/// Returns the property with the given name.
+		/// </returns>
+        /// <exception cref="KeyNotFoundException"></exception>
+        public EventProperty? this[string name] {
 			get {
 				ArgumentNullException.ThrowIfNull(name, nameof(name));
-				return base.Items.First(x => x.Name == name);
+				return base.Items.FirstOrDefault(x => x.Name == name);
 			}
 			set {
-				for (var i = 0; i < base.Items.Count; i++) {
+                ArgumentNullException.ThrowIfNull(name, nameof(name));
+                ArgumentNullException.ThrowIfNull(value, nameof(value));
+
+				if (value.Name != name)
+					throw new ArgumentException("The name of the property does not match the key", nameof(value));
+
+                for (var i = 0; i < base.Items.Count; i++) {
 					if (base.Items[i].Name == name) {
 						SetItem(i, value);
 						return;
@@ -25,10 +53,21 @@ namespace Deveel.Events {
 			}
 		}
 
-		public bool Contains(string name) {
+        /// <summary>
+        /// Checks if the collection contains a property with the given name.
+        /// </summary>
+        /// <param name="name">
+		/// The name of the property to check for.
+		/// </param>
+		/// <returns>
+		/// Returns <c>true</c> if the collection contains a property with the given name,
+		/// otherwise <c>false</c>.
+		/// </returns>
+        public bool Contains(string name) {
 			return base.Items.Any(x => x.Name == name);
 		}
 
+		/// <inheritdoc/>
 		protected override void InsertItem(int index, EventProperty item) {
 			ArgumentNullException.ThrowIfNull(item, nameof(item));
 
@@ -44,7 +83,8 @@ namespace Deveel.Events {
 			base.InsertItem(index, item);
 		}
 
-		protected override void SetItem(int index, EventProperty item) {
+        /// <inheritdoc/>
+        protected override void SetItem(int index, EventProperty item) {
 			ArgumentNullException.ThrowIfNull(item, nameof(item));
 
 			if (item.Version == null)
@@ -63,5 +103,23 @@ namespace Deveel.Events {
 
 			base.SetItem(index, item);
 		}
-	}
+
+        /// <summary>
+        /// Adds a property to the collection with the given 
+		/// name and data type.
+        /// </summary>
+        /// <param name="name">
+		/// The name of the property to add.
+		/// </param>
+        /// <param name="dataType">
+		/// The data type of the property.
+		/// </param>
+        /// <param name="version">
+		/// The version of the event this property belongs to.
+		/// </param>
+        public void Add(string name, string dataType, string? version = null)
+        {
+            Add(new EventProperty(name, dataType, version));
+        }
+    }
 }

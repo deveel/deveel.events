@@ -15,7 +15,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{EDED427E-1408-4971-9FA9-EBFCACCEAC22}"
 	ProjectSection(SolutionItems) = preProject
 		test\Directory.Build.props = test\Directory.Build.props
-		test\Deveel.Events.Model.XUnit\Events\EventSchemaTests.cs = test\Deveel.Events.Model.XUnit\Events\EventSchemaTests.cs
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deveel.Events.Schema.XUnit", "test\Deveel.Events.Schema.XUnit\Deveel.Events.Schema.XUnit.csproj", "{9BEFCC78-DBF6-4A3A-B2E3-2A0DD510DEB0}"
@@ -32,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deveel.Events.Publisher.Azu
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmarks", "benchmarks", "{2A332BDD-050D-4E45-81BA-896A46C2B42E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeveelEventsBenchmarks", "benchmarks\DeveelEventsBenchmarks\DeveelEventsBenchmarks.csproj", "{1EE44B7D-1BD0-4D03-AD28-4121472D379E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeveelEventsBenchmarks", "benchmarks\DeveelEventsBenchmarks\DeveelEventsBenchmarks.csproj", "{1EE44B7D-1BD0-4D03-AD28-4121472D379E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

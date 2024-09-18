@@ -76,10 +76,47 @@ namespace Deveel.Events {
 			Assert.Equal("test", Events[0][Events[0].GetAttribute("env")]);
 
 			Assert.Equal("application/cloudevents+json", Events[0].DataContentType);
-			Assert.IsType<string>(Events[0].Data);
-		}
+			var json = Assert.IsType<string>(Events[0].Data);
 
-		[Event("person.created", "https://example.com/events/person.created/1.0")]
+            var data = JsonSerializer.Deserialize<PersonCreated>(json);
+
+            Assert.NotNull(data);
+            Assert.Equal("123", data.Id);
+            Assert.Equal("John", data.FirstName);
+            Assert.Equal("Doe", data.LastName);
+        }
+
+        [Fact]
+        public async Task PublishEventFactory()
+        {
+            var personDeleted = new PersonDeleted
+            {
+                Id = "123",
+                FirstName = "John",
+                LastName = "Doe"
+            };
+
+            await Publisher.PublishEventAsync(personDeleted);
+
+            Assert.Single(Events);
+            Assert.Equal("person.deleted", Events[0].Type);
+            Assert.Equal("https://example.com/events/person.deleted/1.0", Events[0].DataSchema!.ToString());
+            Assert.NotNull(Events[0].Id);
+            Assert.Equal("https://api.svc.deveel.com/test-service", Events[0].Source!.ToString());
+            Assert.Equal("test", Events[0][Events[0].GetAttribute("env")]);
+
+            Assert.Equal("application/json", Events[0].DataContentType);
+            var json = Assert.IsType<string>(Events[0].Data);
+
+            var data = JsonSerializer.Deserialize<PersonDeleted>(json);
+
+            Assert.NotNull(data);
+            Assert.Equal("123", data.Id);
+            Assert.Equal("John", data.FirstName);
+            Assert.Equal("Doe", data.LastName);
+        }
+
+        [Event("person.created", "https://example.com/events/person.created/1.0")]
 		class PersonCreated {
 			[JsonPropertyName("id")]
 			public string Id { get; set; }
@@ -89,6 +126,29 @@ namespace Deveel.Events {
 
 			[JsonPropertyName("last_name")]
 			public string LastName { get; set; }
+		}
+
+		class PersonDeleted : IEventFactory
+		{
+			public string Id { get; set; }
+
+			public string FirstName { get; set; }
+
+            public string LastName { get; set; }
+
+            public CloudEvent CreateEvent()
+			{
+                return new CloudEvent
+                {
+                    Type = "person.deleted",
+                    DataSchema = new Uri("https://example.com/events/person.deleted/1.0"),
+                    Source = new Uri("https://api.svc.deveel.com/test-service"),
+                    Time = DateTime.UtcNow,
+                    Id = Guid.NewGuid().ToString("N"),
+                    DataContentType = "application/json",
+                    Data = JsonSerializer.Serialize(this),
+                };
+            }
 		}
     }
 }
