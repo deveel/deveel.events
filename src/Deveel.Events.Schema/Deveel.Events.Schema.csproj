@@ -3,6 +3,6 @@
     <PackageReference Include="CloudNative.CloudEvents" Version="2.8.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Deveel.Events.Model\Deveel.Events.Model.csproj" />
+    <ProjectReference Include="..\Deveel.Events.Annotations\Deveel.Events.Annotations.csproj" />
   </ItemGroup>
 </Project>

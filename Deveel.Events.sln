@@ -8,8 +8,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B34ECEB3-D2F
 		src\Directory.Build.props = src\Directory.Build.props
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deveel.Events.Model", "src\Deveel.Events.Model\Deveel.Events.Model.csproj", "{7D9395DC-6562-4980-BEB7-0B99D03104B9}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deveel.Events.Schema", "src\Deveel.Events.Schema\Deveel.Events.Schema.csproj", "{D0E8F011-C408-480A-8849-A46408A93AD7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{EDED427E-1408-4971-9FA9-EBFCACCEAC22}"
@@ -33,16 +31,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmarks", "benchmarks", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeveelEventsBenchmarks", "benchmarks\DeveelEventsBenchmarks\DeveelEventsBenchmarks.csproj", "{1EE44B7D-1BD0-4D03-AD28-4121472D379E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deveel.Events.Annotations", "src\Deveel.Events.Annotations\Deveel.Events.Annotations.csproj", "{0E401CA8-4F2E-4A01-94FE-8C4847DAC510}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7D9395DC-6562-4980-BEB7-0B99D03104B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7D9395DC-6562-4980-BEB7-0B99D03104B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7D9395DC-6562-4980-BEB7-0B99D03104B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7D9395DC-6562-4980-BEB7-0B99D03104B9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D0E8F011-C408-480A-8849-A46408A93AD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D0E8F011-C408-480A-8849-A46408A93AD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0E8F011-C408-480A-8849-A46408A93AD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -75,12 +71,15 @@ Global
 		{1EE44B7D-1BD0-4D03-AD28-4121472D379E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EE44B7D-1BD0-4D03-AD28-4121472D379E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EE44B7D-1BD0-4D03-AD28-4121472D379E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E401CA8-4F2E-4A01-94FE-8C4847DAC510}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E401CA8-4F2E-4A01-94FE-8C4847DAC510}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E401CA8-4F2E-4A01-94FE-8C4847DAC510}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E401CA8-4F2E-4A01-94FE-8C4847DAC510}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{7D9395DC-6562-4980-BEB7-0B99D03104B9} = {B34ECEB3-D2F9-459B-A3DE-99E04123E593}
 		{D0E8F011-C408-480A-8849-A46408A93AD7} = {B34ECEB3-D2F9-459B-A3DE-99E04123E593}
 		{9BEFCC78-DBF6-4A3A-B2E3-2A0DD510DEB0} = {EDED427E-1408-4971-9FA9-EBFCACCEAC22}
 		{4D258011-FD57-43B2-9300-2C1DBBA6ECF2} = {B34ECEB3-D2F9-459B-A3DE-99E04123E593}
@@ -89,6 +88,7 @@ Global
 		{BE9C6951-452A-48F2-B24E-5FCFFDBD7A7B} = {B34ECEB3-D2F9-459B-A3DE-99E04123E593}
 		{80836AD2-3E2C-44C1-8A7C-C8D680B6E7B1} = {EDED427E-1408-4971-9FA9-EBFCACCEAC22}
 		{1EE44B7D-1BD0-4D03-AD28-4121472D379E} = {2A332BDD-050D-4E45-81BA-896A46C2B42E}
+		{0E401CA8-4F2E-4A01-94FE-8C4847DAC510} = {B34ECEB3-D2F9-459B-A3DE-99E04123E593}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2F6B1794-D5DB-4788-A4E3-2786DA1F4359}
