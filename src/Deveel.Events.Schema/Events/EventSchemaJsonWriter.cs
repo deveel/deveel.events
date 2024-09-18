@@ -1,14 +1,44 @@
-﻿using System.Text.Json;
+﻿// 
+//  Copyright 2023-2024 Antonello Provenzano
+// 
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+// 
+//        http://www.apache.org/licenses/LICENSE-2.0
+// 
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+
+using System.Text.Json;
 
 namespace Deveel.Events {
-	public sealed class EventSchemaJsonWriter : IEventSchemaWriter {
-		public JsonWriterOptions JsonWriterOptions { get; }
-
-		public EventSchemaJsonWriter(JsonWriterOptions? jsonWriterOptions = null) {
+    /// <summary>
+    /// An implementation of <see cref="IEventSchemaWriter"/> that writes
+	/// the schema of an event to a JSON stream.
+    /// </summary>
+    public sealed class EventSchemaJsonWriter : IEventSchemaWriter {
+        /// <summary>
+        /// Constructs the writer with the given options to configure
+		/// the JSON writer.
+        /// </summary>
+        /// <param name="jsonWriterOptions">
+		/// The options that are used to configure the JSON writer.
+		/// </param>
+        public EventSchemaJsonWriter(JsonWriterOptions? jsonWriterOptions = null) {
 			JsonWriterOptions = jsonWriterOptions ?? new System.Text.Json.JsonWriterOptions();
 		}
 
-		public async Task WriteToAsync(Stream stream, IEventSchema schema, CancellationToken cancellationToken = default) {
+        /// <summary>
+        /// The options that are used to configure the JSON writer.
+        /// </summary>
+        public JsonWriterOptions JsonWriterOptions { get; }
+
+        /// <inheritdoc/>
+        public async Task WriteToAsync(Stream stream, IEventSchema schema, CancellationToken cancellationToken = default) {
 			using var writer = new Utf8JsonWriter(stream, JsonWriterOptions);
 			writer.WriteStartObject();
 

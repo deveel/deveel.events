@@ -2,4 +2,4 @@
 
 using DeveelEventsBenchmarks;
 
-var summary = BenchmarkRunner.Run<PublishBenchmarks>();
+BenchmarkRunner.Run<PublishBenchmarks>();

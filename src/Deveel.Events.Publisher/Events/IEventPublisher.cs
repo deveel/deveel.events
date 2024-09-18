@@ -13,28 +13,28 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
-using Azure.Messaging.ServiceBus;
+using CloudNative.CloudEvents;
 
-namespace Deveel.Events {
+namespace Deveel.Events
+{
     /// <summary>
-    /// A service used to create instances of <see cref="ServiceBusClient"/>
-    /// for communication with Azure Service Bus.
+    /// A service that is used to publish events
+    /// to one or more channels.
     /// </summary>
-    public interface IServiceBusClientFactory {
+    public interface IEventPublisher
+    {
         /// <summary>
-        /// Creates a new instance of <see cref="ServiceBusClient"/>
-        /// from the given connection string and options.
+        /// Publishes the given event to the underlying channels.
         /// </summary>
-        /// <param name="connectionString">
-        /// The connection string to the Azure Service Bus.
+        /// <param name="event">
+        /// The instance of the <see cref="CloudEvent"/> to publish.
         /// </param>
-        /// <param name="options">
-        /// The options to use when creating the client.
+        /// <param name="cancellationToken">
+        /// A token to cancel the operation.
         /// </param>
         /// <returns>
-        /// Returns a new instance of <see cref="ServiceBusClient"/>
-        /// that can be used to communicate with the Azure Service Bus.
+        /// Returns a task that will be completed when the event is published.
         /// </returns>
-		ServiceBusClient CreateClient(string connectionString, ServiceBusClientOptions options);
-	}
+        Task PublishEventAsync(CloudEvent @event, CancellationToken cancellationToken = default);
+    }
 }

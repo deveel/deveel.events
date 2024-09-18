@@ -1,4 +1,19 @@
-﻿using System.Runtime.Serialization;
+﻿// 
+//  Copyright 2023-2024 Antonello Provenzano
+// 
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+// 
+//        http://www.apache.org/licenses/LICENSE-2.0
+// 
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+
+using System.Runtime.Serialization;
 
 using Azure.Messaging.ServiceBus;
 
@@ -9,7 +24,10 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 
 namespace Deveel.Events {
-	public sealed class ServiceBusEventPublishChannel : IEventPublishChannel, IAsyncDisposable, IDisposable {
+    /// <summary>
+    /// A channel that publishes events to an Azure Service Bus queue.
+    /// </summary>
+    public sealed class ServiceBusEventPublishChannel : IEventPublishChannel, IAsyncDisposable, IDisposable {
 		private ServiceBusSender? sender;
 		private ServiceBusClient? client;
 		private readonly ServiceBusMessageFactory messageCreator;
@@ -17,7 +35,24 @@ namespace Deveel.Events {
 
 		private bool disposed;
 
-		public ServiceBusEventPublishChannel(
+        /// <summary>
+        /// Creates a new instance of the channel,
+		/// using the specified options, client factory 
+		/// and message creator.
+        /// </summary>
+        /// <param name="options">
+		/// The options to configure the channel.
+		/// </param>
+        /// <param name="clientFactory">
+		/// A factory to create the client to the Azure Service Bus.
+		/// </param>
+        /// <param name="messageCreator">
+		/// The factory to create the message to send to the queue.
+		/// </param>
+        /// <param name="logger">
+		/// A logger to record the operations of the channel.
+		/// </param>
+        public ServiceBusEventPublishChannel(
 			IOptions<ServiceBusEventPublishChannelOptions> options,
 			IServiceBusClientFactory clientFactory,
 			ServiceBusMessageFactory messageCreator,
@@ -49,7 +84,8 @@ namespace Deveel.Events {
 				throw new ObjectDisposedException(nameof(ServiceBusEventPublishChannel));
 		}
 
-		public async Task PublishAsync(CloudEvent @event, CancellationToken cancellationToken = default) {
+        /// <inheritdoc />
+        public async Task PublishAsync(CloudEvent @event, CancellationToken cancellationToken = default) {
 			ThrowIfDisposed();
 			cancellationToken.ThrowIfCancellationRequested();
 
@@ -72,14 +108,16 @@ namespace Deveel.Events {
 
 		}
 
-		public void Dispose() {
+        /// <inheritdoc />
+        public void Dispose() {
 			if (disposed)
 				return;
 
 			DisposeAsyncCore().GetAwaiter().GetResult();
 		}
 
-		public async ValueTask DisposeAsync() {
+        /// <inheritdoc />
+        public async ValueTask DisposeAsync() {
 			if (disposed)
 				return;
 

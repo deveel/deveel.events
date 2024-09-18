@@ -36,5 +36,8 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+    <None Include="..\..\Deveel.Events.licenseheader">
+      <Pack>false</Pack>
+    </None>
   </ItemGroup>
 </Project>

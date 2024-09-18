@@ -1,4 +1,6 @@
-﻿// 
+extensions: designer.cs generated.cs
+extensions: .cs .cpp .h
+// 
 //  Copyright 2023-2024 Antonello Provenzano
 // 
 //    Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,12 +14,3 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-
-using Azure.Messaging.ServiceBus;
-
-namespace Deveel.Events {
-	class ServiceBusClientFactory : IServiceBusClientFactory {
-		public ServiceBusClient CreateClient(string connectionString, ServiceBusClientOptions options)
-			=> new ServiceBusClient(connectionString, options);
-	}
-}
