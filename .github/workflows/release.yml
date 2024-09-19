@@ -1,0 +1,78 @@
+name: Events Release
+
+permissions:
+  contents: read
+  packages: write
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+       version:
+         type: string
+         required: true
+         description: The version to be published
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        dotnet-version: [ '6.0.x', '7.0.x', '8.0.x' ]
+
+    steps:
+    - uses: actions/checkout@v4
+  
+    - name: Emit .NET 6.0 Framework Version
+      if: matrix.dotnet == '6.0.x'
+      run: echo "DOTNET_FX_VERSION=net6.0" >> $GITHUB_ENV
+
+    - name: Emit .NET 7.0 Framework Version
+      if: matrix.dotnet == '7.0.x'
+      run: echo "DOTNET_FX_VERSION=net7.0" >> $GITHUB_ENV
+
+    - name: Emit .NET 8.0 Framework Version
+      if: matrix.dotnet == '8.0.x'
+      run: echo "DOTNET_FX_VERSION=net8.0" >> $GITHUB_ENV
+    
+    - name: Setup .NET ${{ matrix.dotnet-version }} Framework
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ matrix.dotnet-version }}
+              
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet build --no-restore -c Release
+      
+    - name: Test
+      run: dotnet test --no-build --verbosity normal -c Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+      
+    # - name: Collect to Codecov
+    #   uses: codecov/codecov-action@v3
+    #   with:
+    #     token: ${{ secrets.DEVEEL_CODECOV_TOKEN }}
+
+  publish:
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+    - name: Extract the Version
+      run: echo "VERSION=$(echo ${{ github.event.release.tag_name }} | sed -e 's/^v//')" >> $GITHUB_ENV
+      if: github.event.release.tag_name != null
+
+    - name: Set the Version from Input
+      run: echo "VERSION=${{ inputs.version }}" >> $GITHUB_ENV
+      if: github.event.release.tag_name == null
+
+    - name: Pack NuGet
+      run: dotnet pack -p:PackageVersion=${{ env.VERSION }} -c Release -o ./nuget -p:Version=${{ env.VERSION }}
+      
+    - name: Push Github Nuget
+      run: dotnet nuget push ./nuget/*.nupkg -s "https://nuget.pkg.github.com/deveel/index.json" --skip-duplicate --api-key ${{secrets.GITHUB_TOKEN}}
+
+    - name: Push to Github.org
+      run: dotnet nuget push ./nuget/**/*.nupkg --skip-duplicate --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json

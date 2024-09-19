@@ -2,11 +2,13 @@
 
 This project provides a simple and lightweight framework for publishing events to subscribers, using common channels and topics.
 
-The ambition of this little framework is to implement a set of patterns and practices that can be used to implement a simple and efficient event-driven architecture in a .NET application, using common approaches to create events and publish them.
+The ambition of this little framework is to implement a set of common patterns and practices that can be used to implement a simple and efficient event-driven architecture in a .NET application, using common approaches to create events and publish them.
+
+It is not in the scope of this project to provide a full-featured event storage system, nor a complex pub/sub application: if you need such a system, you should consider using a message broker or a message queue system (such as RabbitMQ, Kafka, or Azure Service Bus) to implement a more complex and scalable event-driven architecture).
 
 ## Motivation
 
-Often when developing applications, it is necessary to implement a mechanism to notify other parts of the system about changes or events that occur in the application.
+Often when developing applications, it is necessary to implement a mechanism to notify other parts of the system about changes or events that occur in the application: several times the implementor ends up rewriting boilerplate code to manage the events and notifications.
 
 At the present time, there are several ways to implement such a mechanism, such as using a message broker, a message queue, or a pub/sub system, but every organization should implement its own way to manage events and notifications.
 
@@ -51,8 +53,11 @@ To enable this capability, you must first register the publisher in the service 
 ```csharp
 using Deveel.Events;
 
-var services = new ServiceCollection();
-services.AddEventPublisher();
+var builder = WebApplication.CreateBuilder(args);
+
+// ...
+
+builder.Services.AddEventPublisher();
 ```
 
 Then, you can create an event and publish it to a channel:
@@ -60,19 +65,65 @@ Then, you can create an event and publish it to a channel:
 ```csharp
 using Deveel.Events;
 
-var publisher = serviceProvider.GetRequiredService<IEventPublisher>();
+public class MyService {
+    private readonly IEventPublisher publisher;
 
-var @event = new CloudEvent("com.example.myevent", new Uri("http://example.com/events/123"), "Hello, World!") {
-	ContentType = "text/plain",
-	DataSchema = new Uri("http://example.com/schema"),
-	Source = new Uri("http://example.com"),
-	Data = "Hello, World!"
-};
+    public MyService(IEventPublisher publisher) {
+        this.publisher = publisher;
+    }
 
-await publisher.PublishAsync(@event);
+    public async Task PublishEventAsync() {
+        var @event = new CloudEvent("com.example.myevent", new Uri("http://example.com/events/123"), "Hello, World!") {
+            ContentType = "text/plain",
+            DataSchema = new Uri("http://example.com/schema"),
+            Source = new Uri("http://example.com"),
+            Data = "Hello, World!"
+        };
+
+        await publisher.PublishEventAsync(@event);
+    }
+}
 ```
 
 Note that the above example will publish the event to all the channels that are registered in the publisher.
+
+### Publishing from Event Data
+
+If you have a class that represents the data of an event, you can use the `EventAttribute` to decorate such a class to describe the metadata of the event containing it.
+
+For example, consider the following class:
+
+```csharp
+using Deveel.Events.Annotations;
+
+[Event("com.example.myevent", "1.0")]
+public class MyEventData {
+    [Required]
+    public string Message { get; set; }
+}
+```
+
+You can then publish an event using the data class:
+
+```csharp
+using Deveel.Events;
+
+public class MyService {
+    private readonly IEventPublisher publisher;
+
+    public MyService(IEventPublisher publisher) {
+        this.publisher = publisher;
+    }
+    
+    public async Task PublishEventAsync() {
+        var data = new MyEventData {
+            Message = "Hello, World!"
+        };
+        
+        await publisher.PublishAsync(data);
+    }
+}
+```
 
 ## Future Work
 
@@ -80,6 +131,7 @@ The framework is still in its early stages, and there are several areas that nee
 
 Some of the areas that we plan to work on in the future are:
 
+- Supporting custom event serializers and deserializers
 - Implementing more publishers for different messaging systems (eg. RabbitMQ, Kafka, etc.)
 - Supporting the deserialization of events from channels, to make consistent the published events are consumed
 - Allow the selection of the channel to publish an event among the registered ones (eg. with named channels)
