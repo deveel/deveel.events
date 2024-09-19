@@ -16,10 +16,11 @@ on:
 
 jobs:
   release:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
+        os: [ ubuntu-latest, windows-latest ]
         dotnet-version: [ '6.0.x', '7.0.x', '8.0.x' ]
 
     steps:
@@ -60,6 +61,8 @@ jobs:
     needs: release
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v4
+  
     - name: Extract the Version
       run: echo "VERSION=$(echo ${{ github.event.release.tag_name }} | sed -e 's/^v//')" >> $GITHUB_ENV
       if: github.event.release.tag_name != null
@@ -69,7 +72,7 @@ jobs:
       if: github.event.release.tag_name == null
 
     - name: Pack NuGet
-      run: dotnet pack -p:PackageVersion=${{ env.VERSION }} -c Release -o ./nuget -p:Version=${{ env.VERSION }}
+      run: dotnet pack -p:PackageVersion=${{ env.VERSION }} -c Release -o ./nuget -p:Version=${{ env.VERSION }} --include-symbols --include-source
       
     - name: Push Github Nuget
       run: dotnet nuget push ./nuget/*.nupkg -s "https://nuget.pkg.github.com/deveel/index.json" --skip-duplicate --api-key ${{secrets.GITHUB_TOKEN}}

@@ -12,11 +12,11 @@ using System.Text.Json;
 
 namespace DeveelEventsBenchmarks
 {
-    [SimpleJob(RuntimeMoniker.Net60)]
-    [SimpleJob(RuntimeMoniker.Net70)]
-    [SimpleJob(RuntimeMoniker.Net80)]
-    [MemoryDiagnoser]
-    [RyuJitX64Job, RyuJitX86Job]
+    //[SimpleJob(RuntimeMoniker.Net60)]
+    //[SimpleJob(RuntimeMoniker.Net70)]
+    //[SimpleJob(RuntimeMoniker.Net80)]
+    //[MemoryDiagnoser]
+    //[RyuJitX64Job, RyuJitX86Job]
     public class PublishBenchmarks
     {
         private readonly EventPublisher _publisher;
