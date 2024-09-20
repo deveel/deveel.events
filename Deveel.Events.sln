@@ -33,6 +33,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeveelEventsBenchmarks", "b
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deveel.Events.Annotations", "src\Deveel.Events.Annotations\Deveel.Events.Annotations.csproj", "{0E401CA8-4F2E-4A01-94FE-8C4847DAC510}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deveel.Events.Publisher.RabbitMq", "src\Deveel.Events.Publisher.RabbitMq\Deveel.Events.Publisher.RabbitMq.csproj", "{DD261016-E990-4AFC-870E-584D070656F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deveel.Events.Publisher.RabbitMq.XUnit", "test\Deveel.Events.Publisher.RabbitMq.XUnit\Deveel.Events.Publisher.RabbitMq.XUnit.csproj", "{4F06FB52-31B5-4594-89EF-429A600FD485}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +79,14 @@ Global
 		{0E401CA8-4F2E-4A01-94FE-8C4847DAC510}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E401CA8-4F2E-4A01-94FE-8C4847DAC510}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E401CA8-4F2E-4A01-94FE-8C4847DAC510}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD261016-E990-4AFC-870E-584D070656F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD261016-E990-4AFC-870E-584D070656F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD261016-E990-4AFC-870E-584D070656F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD261016-E990-4AFC-870E-584D070656F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F06FB52-31B5-4594-89EF-429A600FD485}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F06FB52-31B5-4594-89EF-429A600FD485}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F06FB52-31B5-4594-89EF-429A600FD485}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F06FB52-31B5-4594-89EF-429A600FD485}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,6 +101,8 @@ Global
 		{80836AD2-3E2C-44C1-8A7C-C8D680B6E7B1} = {EDED427E-1408-4971-9FA9-EBFCACCEAC22}
 		{1EE44B7D-1BD0-4D03-AD28-4121472D379E} = {2A332BDD-050D-4E45-81BA-896A46C2B42E}
 		{0E401CA8-4F2E-4A01-94FE-8C4847DAC510} = {B34ECEB3-D2F9-459B-A3DE-99E04123E593}
+		{DD261016-E990-4AFC-870E-584D070656F4} = {B34ECEB3-D2F9-459B-A3DE-99E04123E593}
+		{4F06FB52-31B5-4594-89EF-429A600FD485} = {EDED427E-1408-4971-9FA9-EBFCACCEAC22}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2F6B1794-D5DB-4788-A4E3-2786DA1F4359}

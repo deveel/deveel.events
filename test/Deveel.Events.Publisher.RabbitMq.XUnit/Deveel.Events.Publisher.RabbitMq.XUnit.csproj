@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">  
+  <ItemGroup>
+    <PackageReference Include="MartinCostello.Logging.XUnit" Version="0.3.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" Condition="$(TargetFramework) == 'net6.0'" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" Condition="$(TargetFramework) == 'net7.0'" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" Condition="$(TargetFramework) == 'net8.0'" />
+    <PackageReference Include="Testcontainers.RabbitMq" Version="3.10.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Deveel.Events.Publisher.RabbitMq\Deveel.Events.Publisher.RabbitMq.csproj" />
+  </ItemGroup>
+</Project>
