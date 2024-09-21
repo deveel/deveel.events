@@ -14,6 +14,8 @@ using Xunit.Abstractions;
 
 namespace Deveel.Events
 {
+    [Trait("Channel", "RabbitMq")]
+    [Trait("Function", "Publish")]
     public class RabbitMqChannelPublishTests : IClassFixture<RabbitMqTestServer>, IAsyncLifetime
     {
         private IModel? _channel;

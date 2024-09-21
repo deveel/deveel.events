@@ -11,7 +11,9 @@ using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 
 namespace Deveel.Events {
-	public class ServiceBusChannelTests {
+	[Trait("Channel", "ServiceBus")]
+	[Trait("Function", "Publish")]
+    public class ServiceBusChannelTests {
 		public ServiceBusChannelTests(ITestOutputHelper outputHelper) {
 			var services = new ServiceCollection();
 			services.AddLogging(builder => builder.AddXUnit(outputHelper).SetMinimumLevel(LogLevel.Debug));
