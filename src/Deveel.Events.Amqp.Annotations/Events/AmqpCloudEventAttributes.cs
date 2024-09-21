@@ -6,9 +6,10 @@
 namespace Deveel.Events
 {
     /// <summary>
-    /// Contains the constants used in the RabbitMQ Cloud Event publishing.
+    /// Contains the constants used in the Cloud Event attributes
+    /// to define the AMQP exchange and routing key.
     /// </summary>
-    public static class RabbitMqCloudEventConstants
+    public static class AmqpCloudEventAttributes
     {
         /// <summary>
         /// The attribute name used to define the exchange name 

@@ -125,8 +125,7 @@ namespace Deveel.Events
         }
 
         [Event("person.created", "1.0")]
-        [EventAttributes(RabbitMqCloudEventConstants.AmqpExchangeNameAttribute, "test")]
-        [EventAttributes(RabbitMqCloudEventConstants.AmqpRoutingKeyAttribute, "test.event1")]
+        [AmqpExchange("test"), AmqpRoutingKey("test.event1")]
         class PersonCreated
         {
             public string Name { get; set; }

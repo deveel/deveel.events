@@ -55,10 +55,9 @@ namespace Deveel.Events {
 			IServiceBusClientFactory clientFactory,
 			ServiceBusMessageFactory messageCreator,
 			ILogger<ServiceBusEventPublishChannel>? logger = null) {
-			if (String.IsNullOrWhiteSpace(options.ConnectionString))
-				throw new ArgumentException("The connection string is required");
-			if (String.IsNullOrWhiteSpace(options.QueueName))
-				throw new ArgumentException("The name of the queue is missing");
+
+			ArgumentNullException.ThrowIfNull(options.ConnectionString, nameof(ServiceBusEventPublishChannelOptions.ConnectionString));
+            ArgumentNullException.ThrowIfNull(options.QueueName, nameof(ServiceBusEventPublishChannelOptions.QueueName));
 
 			var clientOptions = options.ClientOptions ?? new ServiceBusClientOptions();
 

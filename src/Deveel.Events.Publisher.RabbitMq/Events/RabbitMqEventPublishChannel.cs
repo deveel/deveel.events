@@ -83,7 +83,7 @@ namespace Deveel.Events
 
         private string? GetRoutingKey(CloudEvent @event)
         {
-            var exchangeNameAttr = @event.GetAttribute(RabbitMqCloudEventConstants.AmqpRoutingKeyAttribute);
+            var exchangeNameAttr = @event.GetAttribute(AmqpCloudEventAttributes.AmqpRoutingKeyAttribute);
             return exchangeNameAttr != null && exchangeNameAttr.Type == CloudEventAttributeType.String
                 ? ((string?)@event[exchangeNameAttr.Name]) ?? _options.RoutingKey
                 : _options.RoutingKey;
@@ -91,7 +91,7 @@ namespace Deveel.Events
 
         private string? GetExchangeName(CloudEvent @event)
         {
-            var exchangeName = @event.GetAttribute(RabbitMqCloudEventConstants.AmqpExchangeNameAttribute);
+            var exchangeName = @event.GetAttribute(AmqpCloudEventAttributes.AmqpExchangeNameAttribute);
             return exchangeName != null && exchangeName.Type == CloudEventAttributeType.String
                 ? ((string?)@event[exchangeName.Name]) ?? _options.ExchangeName
                 : _options.ExchangeName;

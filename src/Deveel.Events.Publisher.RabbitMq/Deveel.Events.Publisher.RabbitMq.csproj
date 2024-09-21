@@ -10,6 +10,7 @@
     <PackageReference Include="RabbitMQ.Client" Version="6.8.1" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Deveel.Events.Amqp.Annotations\Deveel.Events.Amqp.Annotations.csproj" />
     <ProjectReference Include="..\Deveel.Events.Publisher\Deveel.Events.Publisher.csproj" />
   </ItemGroup>
 </Project>
