@@ -49,9 +49,13 @@ jobs:
       - name: Build
         run: dotnet build -c Release --no-restore
 
-      - name: Test
+      - name: Test (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu')
         run: dotnet test -c Release --no-build --verbosity normal --framework ${{ env.DOTNET_TFM }}
+
+      - name: Test (Windows)
+        if: startsWith(matrix.os, 'windows')
+        run: dotnet test -c Release --no-build --verbosity normal --framework ${{ env.DOTNET_TFM }} --filter Channel!=RabbitMQ
 
   publish:
     name: Publish Events Packages

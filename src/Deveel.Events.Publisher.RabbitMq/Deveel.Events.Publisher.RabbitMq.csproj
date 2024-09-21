@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Title>Deveel Events RabbitMQ Publisher</Title>
+    <Description>Provides a publisher of events through the RabbitMQ queues</Description>
+    <PackageTags>event;events;publisher;rabbit;rabbitmq;amqp</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="CloudNative.CloudEvents.Avro" Version="2.8.0" />
+    <PackageReference Include="CloudNative.CloudEvents.SystemTextJson" Version="2.8.0" />
+    <PackageReference Include="RabbitMQ.Client" Version="6.8.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Deveel.Events.Amqp.Annotations\Deveel.Events.Amqp.Annotations.csproj" />
+    <ProjectReference Include="..\Deveel.Events.Publisher\Deveel.Events.Publisher.csproj" />
+  </ItemGroup>
+</Project>

@@ -4,7 +4,14 @@
 //
 
 namespace Deveel.Events {
-	public sealed class EventGuidGeneratorOptions {
+    /// <summary>
+    /// The options to configure the generation of a 
+    /// GUID for an event.
+    /// </summary>
+    public sealed class EventGuidGeneratorOptions {
+        /// <summary>
+        /// The format to use to generate the GUID.
+        /// </summary>
 		public string? Format { get; set; } = EventGuidGenerator.DefaultFormat;
 	}
 }

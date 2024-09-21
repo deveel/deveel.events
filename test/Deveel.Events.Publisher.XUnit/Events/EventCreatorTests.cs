@@ -71,6 +71,7 @@ namespace Deveel.Events
             public string FirstName { get; set; }
 
             [JsonPropertyName("last_name"), Required]
+
             public string LastName { get; set; }
 
             [JsonPropertyName("id"), Required]

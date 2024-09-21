@@ -5,6 +5,8 @@ using Microsoft.Extensions.Options;
 
 namespace Deveel.Events
 {
+    [Trait("Channel", "ServiceBus")]
+    [Trait("Function", "Registration")]
     public static class ServiceRegistrationTests
     {
         [Fact]

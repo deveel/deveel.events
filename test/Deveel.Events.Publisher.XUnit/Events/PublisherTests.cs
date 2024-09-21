@@ -57,7 +57,7 @@ namespace Deveel.Events {
 			Assert.NotNull(Events[0].Id);
 			Assert.NotNull(Events[0].Source);
 			Assert.Equal("https://api.svc.deveel.com/test-service", Events[0].Source!.ToString());
-			Assert.Equal("test", Events[0][Events[0].GetAttribute("env")]);
+			Assert.Equal("test", Events[0]["env"]);
 		}
 
 		[Fact]
@@ -73,7 +73,7 @@ namespace Deveel.Events {
 			Assert.Equal("https://example.com/events/person.created/1.0", Events[0].DataSchema!.ToString());
 			Assert.NotNull(Events[0].Id);
 			Assert.Equal("https://api.svc.deveel.com/test-service", Events[0].Source!.ToString());
-			Assert.Equal("test", Events[0][Events[0].GetAttribute("env")]);
+			Assert.Equal("test", Events[0]["env"]);
 
 			Assert.Equal("application/cloudevents+json", Events[0].DataContentType);
 			var json = Assert.IsType<string>(Events[0].Data);
@@ -103,7 +103,7 @@ namespace Deveel.Events {
             Assert.Equal("https://example.com/events/person.deleted/1.0", Events[0].DataSchema!.ToString());
             Assert.NotNull(Events[0].Id);
             Assert.Equal("https://api.svc.deveel.com/test-service", Events[0].Source!.ToString());
-            Assert.Equal("test", Events[0][Events[0].GetAttribute("env")]);
+            Assert.Equal("test", Events[0]["env"]);
 
             Assert.Equal("application/json", Events[0].DataContentType);
             var json = Assert.IsType<string>(Events[0].Data);

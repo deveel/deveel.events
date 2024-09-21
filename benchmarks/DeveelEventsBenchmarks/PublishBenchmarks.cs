@@ -1,4 +1,6 @@
-﻿using BenchmarkDotNet.Attributes;
+﻿#pragma warning disable CS8618
+
+using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;
 
 using CloudNative.CloudEvents;
