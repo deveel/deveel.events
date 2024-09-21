@@ -3,7 +3,7 @@ continuous-delivery-fallback-tag: ''
 branches:
   master:
     mode: ContinuousDeployment
-    tag: '-dev'
+    tag: 'dev'
     increment: Minor
     track-merge-target: true
     tracks-release-branches: true
@@ -20,14 +20,14 @@ branches:
     regex: feature?[/]
     mode: ContinuousDeployment
     increment: Inherit
-    tag: '-alpha'
+    tag: 'alpha'
     is-release-branch: false
     prevent-increment-of-merged-branch-version: true
   bugfix:
     regex: bugfix?[/]
     mode: ContinuousDeployment
     increment: Inherit
-    tag: '-bugfix'
+    tag: 'bugfix'
     is-release-branch: false
     prevent-increment-of-merged-branch-version: true
     source-branches: ['master', 'feature', 'release']
