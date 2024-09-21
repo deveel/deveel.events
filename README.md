@@ -1,3 +1,8 @@
+![GitHub License](https://img.shields.io/github/license/deveel/deveel.events)
+![GitHub Release](https://img.shields.io/github/v/release/deveel/deveel.events) ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/deveel/deveel.events/cicd.yml?logo=github)
+![Codecov](https://img.shields.io/codecov/c/github/deveel/deveel.events?logo=codecov)
+
+
 # Deveel Events
 
 This project provides a simple and lightweight framework for publishing events to subscribers, using common channels and topics.

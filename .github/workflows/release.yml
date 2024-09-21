@@ -60,10 +60,10 @@ jobs:
       if: startsWith(matrix.os, 'windows')
       run: dotnet test --no-build --verbosity normal -c Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --filter Channel!=RabbitMQ
       
-    # - name: Collect to Codecov
-    #   uses: codecov/codecov-action@v3
-    #   with:
-    #     token: ${{ secrets.DEVEEL_CODECOV_TOKEN }}
+    - name: Collect to Codecov
+      uses: codecov/codecov-action@v4
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
 
   publish:
     needs: release

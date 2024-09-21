@@ -51,11 +51,16 @@ jobs:
 
       - name: Test (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu')
-        run: dotnet test -c Release --no-build --verbosity normal --framework ${{ env.DOTNET_TFM }}
+        run: dotnet test -c Release --no-build --verbosity normal --framework ${{ env.DOTNET_TFM }} /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
 
       - name: Test (Windows)
         if: startsWith(matrix.os, 'windows')
-        run: dotnet test -c Release --no-build --verbosity normal --framework ${{ env.DOTNET_TFM }} --filter Channel!=RabbitMQ
+        run: dotnet test -c Release --no-build --verbosity normal --framework ${{ env.DOTNET_TFM }} /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --filter Channel!=RabbitMQ
+
+      - name: Collect to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   publish:
     name: Publish Events Packages
