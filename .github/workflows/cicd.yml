@@ -74,7 +74,7 @@ jobs:
     - name: Determine Version
       uses: gittools/actions/gitversion/execute@v3.0.0
 
-    - name: Setup .NET
+    - name: Setup .NET 8.0
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x

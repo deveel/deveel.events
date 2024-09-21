@@ -70,17 +70,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
   
-    - name: Extract the Version
-      run: echo "VERSION=$(echo ${{ github.event.release.tag_name }} | sed -e 's/^v//')" >> $GITHUB_ENV
-      if: github.event.release.tag_name != null
+    - name: Setup GitVsion
+      if: ${{ inputs.version }} == null
+      uses: gittools/actions/gitversion/setup@v3.0.0
+
+    - name: Determine GitVersion
+      if: ${{ inputs.version }} == null
+      id: gitversion
+      uses: gittools/actions/gitversion/execute@v3.0.0
+      with:
+        updateAssemblyInfo: true
+
+    # - name: Extract the Version
+    #   run: echo "VERSION=$(echo ${{ github.event.release.tag_name }} | sed -e 's/^v//')" >> $GITHUB_ENV
+    #   if: github.event.release.tag_name != null
 
     - name: Set the Version from Input
-      run: echo "VERSION=${{ inputs.version }}" >> $GITHUB_ENV
-      if: github.event.release.tag_name == null
+      run: echo "GitVersion_SemVer=${{ inputs.version }}" >> $GITHUB_ENV
+      if: ${{ inputs.version }} != null
 
     - name: Pack NuGet
-      run: dotnet pack -p:PackageVersion=${{ env.VERSION }} -c Release -o ./nuget -p:Version=${{ env.VERSION }} --include-symbols --include-source
+      run: dotnet pack -p:PackageVersion=${{ env.GitVersion_SemVer }} -c Release -o ./nuget -p:Version=${{ env.GitVersion_SemVer }} --include-symbols --include-source
       
     - name: Push Github Nuget
       run: dotnet nuget push ./nuget/*.nupkg -s "https://nuget.pkg.github.com/deveel/index.json" --skip-duplicate --api-key ${{secrets.GITHUB_TOKEN}}
