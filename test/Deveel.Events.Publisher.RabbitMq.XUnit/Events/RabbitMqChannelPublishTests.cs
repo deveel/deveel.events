@@ -16,30 +16,34 @@ namespace Deveel.Events
 {
     public class RabbitMqChannelPublishTests : IClassFixture<RabbitMqTestServer>, IAsyncLifetime
     {
-        private readonly IModel _channel;
+        private IModel? _channel;
 
         public RabbitMqChannelPublishTests(RabbitMqTestServer testServer, ITestOutputHelper outputHelper)
         {
             var services = new ServiceCollection();
-            services.AddEventPublisher()
+            services.AddEventPublisher(options =>
+            {
+                options.DataSchemaBaseUri = new System.Uri("http://example.com/events/schema");
+                options.Source = new System.Uri("https://api.svc.deveel.com");
+            })
                 .UseRabbitMq(options => options.ConnectionString = testServer.ConnectionString);
 
             services.AddLogging(logging => logging.AddXUnit(outputHelper).SetMinimumLevel(LogLevel.Trace));
 
-            var provider = services.BuildServiceProvider();
-
-            Publisher = provider.GetRequiredService<EventPublisher>();
-
-            var connection = provider.GetRequiredService<IConnection>();
-            _channel = connection.CreateModel();
+            Services = services.BuildServiceProvider();
         }
 
-        private EventPublisher Publisher { get; set; }
+        private IServiceProvider Services { get; }
+
+        private EventPublisher Publisher => Services.GetRequiredService<EventPublisher>();
 
         private CloudEvent? ReceivedEvent { get; set; }
 
         public Task InitializeAsync()
         {
+            var connection = Services.GetRequiredService<IConnection>();
+            _channel = connection.CreateModel();
+
             var consumer = new EventingBasicConsumer(_channel);
             consumer.Received += (sender, args) =>
             {
@@ -61,12 +65,14 @@ namespace Deveel.Events
 
         public Task DisposeAsync()
         {
-            _channel.Dispose();
+            _channel?.Dispose();
+            (Services as IDisposable)?.Dispose();
+
             return Task.CompletedTask;
         }
 
         [Fact]
-        public async Task PublishEventToRabbitMq()
+        public async Task PublishCloudEventToRabbitMq()
         {
             var cloudEvent = new CloudNative.CloudEvents.CloudEvent
             {
@@ -92,6 +98,38 @@ namespace Deveel.Events
             Assert.Equal(cloudEvent.Type, ReceivedEvent.Type);
             Assert.Equal(cloudEvent.Source, ReceivedEvent.Source);
             Assert.Equal(cloudEvent.Subject, ReceivedEvent.Subject);
+        }
+
+        [Fact]
+        public async Task PublishEventDataToRabbitMq()
+        {
+            var personCreated = new PersonCreated
+            {
+                Name = "John Doe",
+                Age = 30
+            };
+
+            await Publisher.PublishAsync(personCreated);
+
+            await Task.Delay(200);
+
+            Assert.NotNull(ReceivedEvent);
+
+            Assert.Equal("person.created", ReceivedEvent.Type);
+            Assert.Equal("test", ReceivedEvent["amqpexchange"]);
+            Assert.Equal("test.event1", ReceivedEvent["amqproutingkey"]);
+
+            // TODO: deserialize the event data from JSON
+        }
+
+        [Event("person.created", "1.0")]
+        [EventAttributes(RabbitMqCloudEventConstants.AmqpExchangeNameAttribute, "test")]
+        [EventAttributes(RabbitMqCloudEventConstants.AmqpRoutingKeyAttribute, "test.event1")]
+        class PersonCreated
+        {
+            public string Name { get; set; }
+
+            public int Age { get; set; }
         }
     }
 }
