@@ -58,7 +58,7 @@ jobs:
 
     - name: Test (Windows)
       if: startsWith(matrix.os, 'windows')
-      run: dotnet test --no-build --verbosity normal -c Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --filter Channel=RabbitMQ
+      run: dotnet test --no-build --verbosity normal -c Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --filter Channel!=RabbitMQ
       
     # - name: Collect to Codecov
     #   uses: codecov/codecov-action@v3
