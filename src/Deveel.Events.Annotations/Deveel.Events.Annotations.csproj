@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <Title>Deveel Events Model</Title>
-    <Description>The model and abstractions of the Deveel Events</Description>
-    <PackageTags>event;events;model;abstractions</PackageTags>
+    <Description>Provides annotations to define events that are published in a channel</Description>
+    <PackageTags>event;events;model;abstractions;annotations;attribute</PackageTags>
   </PropertyGroup>
 
 </Project>

@@ -21,27 +21,27 @@ namespace Deveel.Events {
 			var obj = JsonSerializer.Deserialize<JsonNode>(json)!;
 			Assert.NotNull(obj);
 			Assert.NotNull(obj["type"]);
-			Assert.Equal("test", obj["type"].GetValue<string>());
+			Assert.Equal("test", obj["type"]!.GetValue<string>());
 			Assert.NotNull(obj["version"]);
-			Assert.Equal("1.0", obj["version"].GetValue<string>());
+			Assert.Equal("1.0", obj["version"]!.GetValue<string>());
 			Assert.NotNull(obj["contentType"]);
-			Assert.Equal("binary", obj["contentType"].GetValue<string>());
+			Assert.Equal("binary", obj["contentType"]!.GetValue<string>());
 			Assert.NotNull(obj["properties"]);
 
-			var properties = obj["properties"].AsObject();
+			var properties = obj["properties"]!.AsObject();
 
 			Assert.NotNull(properties);
 			Assert.NotNull(properties["id"]);
-			Assert.NotNull(properties["id"]["dataType"]);
-			Assert.Equal("string", properties["id"]["dataType"].GetValue<string>());
+			Assert.NotNull(properties["id"]!["dataType"]);
+			Assert.Equal("string", properties["id"]!["dataType"]!.GetValue<string>());
 
 			Assert.NotNull(properties["name"]);
-			Assert.NotNull(properties["name"]["dataType"]);
-			Assert.Equal("string", properties["name"]["dataType"].GetValue<string>());
+			Assert.NotNull(properties["name"]!["dataType"]!);
+			Assert.Equal("string", properties["name"]!["dataType"]!.GetValue<string>());
 
 			Assert.NotNull(properties["age"]);
-			Assert.NotNull(properties["age"]["dataType"]);
-			Assert.Equal("int", properties["age"]["dataType"].GetValue<string>());
+			Assert.NotNull(properties["age"]!["dataType"]!);
+			Assert.Equal("int", properties["age"]!["dataType"]!.GetValue<string>());
 		}
 
 		[Fact]
@@ -67,24 +67,24 @@ namespace Deveel.Events {
 			var obj = JsonSerializer.Deserialize<JsonNode>(json)!;
 			Assert.NotNull(obj);
 			Assert.NotNull(obj["type"]);
-			Assert.Equal("test", obj["type"].GetValue<string>());
+			Assert.Equal("test", obj["type"]!.GetValue<string>());
 			Assert.NotNull(obj["version"]);
-			Assert.Equal("1.0", obj["version"].GetValue<string>());
+			Assert.Equal("1.0", obj["version"]!.GetValue<string>());
 			Assert.NotNull(obj["contentType"]);
-			Assert.Equal("binary", obj["contentType"].GetValue<string>());
+			Assert.Equal("binary", obj["contentType"]!.GetValue<string>());
 			Assert.NotNull(obj["properties"]);
 
-			var properties = obj["properties"].AsObject();
+			var properties = obj["properties"]!.AsObject();
 			Assert.NotNull(properties);
 			Assert.NotNull(properties["age"]);
-			Assert.NotNull(properties["age"]["dataType"]);
-			Assert.Equal("int", properties["age"]["dataType"].GetValue<string>());
-			Assert.NotNull(properties["age"]["required"]);
-			Assert.True(properties["age"]["required"].GetValue<bool>());
-			Assert.NotNull(properties["age"]["min"]);
-			Assert.Equal(14, properties["age"]["min"].GetValue<int>());
-			Assert.NotNull(properties["age"]["max"]);
-			Assert.Equal(32, properties["age"]["max"].GetValue<int>());
+			Assert.NotNull(properties["age"]!["dataType"]!);
+			Assert.Equal("int", properties["age"]!["dataType"]!.GetValue<string>());
+			Assert.NotNull(properties["age"]!["required"]);
+			Assert.True(properties["age"]!["required"]!.GetValue<bool>());
+			Assert.NotNull(properties["age"]!["min"]!);
+			Assert.Equal(14, properties["age"]!["min"]!.GetValue<int>());
+			Assert.NotNull(properties["age"]!["max"]!);
+			Assert.Equal(32, properties["age"]!["max"]!.GetValue<int>());
 		}
 	}
 }

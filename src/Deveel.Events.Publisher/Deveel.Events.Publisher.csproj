@@ -1,4 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Title>Deveel Events Publisher</Title>
+    <Description>
+      The core implementation of the service to publish events to a channel
+    </Description>
+    <PackageTags>event;events;ddd;publisher;channel;core</PackageTags>
+  </PropertyGroup>
   <ItemGroup Condition="$(TargetFramework) == 'net6.0'">
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />

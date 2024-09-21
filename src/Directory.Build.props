@@ -20,6 +20,7 @@
     <DebugType>embedded</DebugType>
     <PackageIcon>deveel-logo.png</PackageIcon>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
@@ -38,6 +39,10 @@
     </None>
     <None Include="..\..\Deveel.Events.licenseheader">
       <Pack>false</Pack>
+    </None>
+    <None Include="..\..\README.md">
+      <Pack>true</Pack>
+      <PackagePath></PackagePath>
     </None>
   </ItemGroup>
 </Project>

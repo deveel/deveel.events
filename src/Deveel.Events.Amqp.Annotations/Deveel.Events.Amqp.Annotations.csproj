@@ -1,5 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+  <PropertyGroup>
+    <Title>Deveel Events AMQP Annotations</Title>
+    <Description>Provides annotations to define metadata to Events that are published to AMQP brokers</Description>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Deveel.Events.Annotations\Deveel.Events.Annotations.csproj" />
   </ItemGroup>
